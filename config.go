@@ -14,8 +14,7 @@ type Config struct {
 	Region string `mapstructure:"region"`
 	Endpoint string `mapstructure:"endpoint"`
 	
-	Port string `mapstructure:"port"`
-	BaseURL string `mapstructure:"baseurl"`
+	BindAddress string `mapstructure:"bind_address"`
 }
 
 func LoadConfig() (*Config, error) {
@@ -36,8 +35,7 @@ func LoadConfig() (*Config, error) {
 	viper.BindEnv("bucket_name","bucket_name")
 	viper.BindEnv("region","region")
 	viper.BindEnv("endpoint","endpoint")
-	viper.BindEnv("port","port")
-	viper.BindEnv("baseurl","baseurl")
+	viper.BindEnv("bind_address","bind_address")
 
 	if _, err := os.Stat("conf/config.yaml"); err == nil {
 		viper.SetConfigName("config")

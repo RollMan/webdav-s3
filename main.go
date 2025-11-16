@@ -1,18 +1,13 @@
 package main
 
 import (
-	"log"
 	"net/http"
-	_ "net/http/pprof"
+	"log"
 )
 
 var Cfg *Config
 
 func main() {
-	go func() {
-		log.Println(http.ListenAndServe("localhost:6060", nil))
-	}()
-
 	var err error
 	Cfg, err = LoadConfig()
 	if err != nil {
@@ -23,8 +18,7 @@ func main() {
 	Logoutput("Webdav server started", "info")
 	Logoutput("Log level: "+Cfg.Loglevel, "info")
 	webdav := NewWebDAVClient()
-	Logoutput("Starting server on port "+Cfg.Port, "info")
-	Logoutput("Base URL: "+Cfg.BaseURL, "info")
+	Logoutput("Starting server on port "+Cfg.BindAddress, "info")
 	http.Handle("/", webdav)
-	http.ListenAndServe(":"+Cfg.Port, nil)
+	log.Fatalln(http.ListenAndServe(Cfg.BindAddress, nil))
 }
