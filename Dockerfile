@@ -1,14 +1,9 @@
-FROM golang:1.22.1-alpine As builder
-
+FROM golang:bullseye AS build
 WORKDIR /app
-COPY . /app
-RUN gofmt -l .
-RUN go get -d -v
-RUN go build -o webdav -v .
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=bind,target=.,rw=true \
+    go mod tidy && \
+    go build -o /webdav
 
-FROM alpine:3.14.2
-WORKDIR /app
-RUN mkdir /app/conf
-COPY --from=builder /app/webdav /app/webdav
-COPY --from=builder /app/config_sample.yaml /app/config_sample.yaml
-CMD [ "/app/webdav" ]
+FROM scratch AS final
+COPY --from=build /webdav /webdav

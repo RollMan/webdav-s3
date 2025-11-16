@@ -7,22 +7,11 @@ A lightweight GO WebDAV server that uses AWS S3 as a backend. It used AWS SDK fo
 
 ### From Source
 
-1. Clone the repository and install the dependencies:
-```bash
-git clone https://github.com/Noahdingpeng/webdav-s3
-cd webdav-s3
-go get -d -v
-go build -o webdav -v .
 ```
-2. Copy the sample configuration file and edit it:
-```bash
-cp config_sample.yaml conf/config.yaml
-vim conf/config.yaml
+docker build . -o artifact/
 ```
-3. Run the server with port setting in the configuration file:
-```bash
-./webdav
-```
+
+Match the base image of golang for your target host to prevent glibc version mismatch errors.
 
 ### Docker Compose
 ```yaml
